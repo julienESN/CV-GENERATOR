@@ -19,10 +19,11 @@ mongoose
   .catch((err) => console.error('Error connecting to MongoDB:', err));
 
 // Routes
+const authRoutes = require('./routes/auth');
 app.get('/', (req, res) => {
   res.send('API is running...');
 });
-
+app.use('/api/auth', authRoutes);
 // Load routes
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
