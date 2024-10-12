@@ -1,9 +1,8 @@
-
 import PropTypes from 'prop-types';
 
 const InputField = ({ label, type, value, onChange }) => {
   return (
-    <div className="mb-4 w-64">
+    <div className="mb-4 w-full">
       <label className="block text-gray-700 mb-2">{label}:</label>
       <input
         type={type}

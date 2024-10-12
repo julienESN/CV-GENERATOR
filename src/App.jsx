@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
+import CreateCvPage from './pages/CreateCvPage';
+import EditCvPage from './pages/EditCvPage';
 import ProtectedRoute from './Hoc/ProtectedRoute';
 import './App.css';
 
@@ -9,7 +11,6 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Route pour la page principale (Login et Register) */}
         <Route
           path="/"
           element={
@@ -30,18 +31,33 @@ function App() {
           }
         />
 
-        {/* Route pour la page de login */}
         <Route path="/login" element={<LoginPage />} />
 
-        {/* Route pour la page d'inscription */}
         <Route path="/register" element={<RegisterPage />} />
 
-        {/* Protected Route pour le Dashboard */}
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/cv/edit/:id"
+          element={
+            <ProtectedRoute>
+              <EditCvPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/create-cv"
+          element={
+            <ProtectedRoute>
+              <CreateCvPage />
             </ProtectedRoute>
           }
         />
