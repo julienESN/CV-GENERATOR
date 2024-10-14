@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import InputField from '../components/InputField';
 import SubmitButton from '../components/SubmitButton';
@@ -47,8 +47,7 @@ const LoginPage = () => {
   return (
     <div className="flex flex-col items-center p-6">
       <h1 className="text-xl font-bold mb-4">Login</h1>
-      {error && <p className="text-red-500 mb-4">{error}</p>}{' '}
-      {/* Affichage des erreurs */}
+      {error && <p className="text-red-500 mb-4">{error}</p>}
       <form onSubmit={handleSubmit} className="flex flex-col items-center">
         <InputField
           label="Email"
@@ -64,6 +63,12 @@ const LoginPage = () => {
         />
         <SubmitButton label="Login" />
       </form>
+      <p className="mt-4">
+        Don&apos;t have an account?{' '}
+        <Link to="/register" className="text-blue-500">
+          Register here
+        </Link>
+      </p>
     </div>
   );
 };

@@ -5,6 +5,7 @@ import DashboardPage from './pages/DashboardPage';
 import CreateCvPage from './pages/CreateCvPage';
 import EditCvPage from './pages/EditCvPage';
 import ProtectedRoute from './Hoc/ProtectedRoute';
+import CvPage from './pages/CvPage';
 import './App.css';
 
 function App() {
@@ -58,6 +59,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CreateCvPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/cv/:id"
+          element={
+            <ProtectedRoute>
+              <CvPage />
             </ProtectedRoute>
           }
         />
