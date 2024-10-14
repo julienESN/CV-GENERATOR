@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const express = require('express');
 const Cv = require('../models/Cv');
 const authenticateToken = require('../middleware/auth');
@@ -7,7 +8,16 @@ router.post('/cv/create', authenticateToken, async (req, res) => {
   const {
     name,
     firstname,
+    email,
+    phone,
+    address,
+    website,
+    summary,
     description,
+    skills,
+    languages,
+    certifications,
+    interests,
     educationalExperiences,
     professionalExperiences,
     visibility,
@@ -17,7 +27,16 @@ router.post('/cv/create', authenticateToken, async (req, res) => {
     const cv = new Cv({
       name,
       firstname,
+      email,
+      phone,
+      address,
+      website,
+      summary,
       description,
+      skills,
+      languages,
+      certifications,
+      interests,
       educationalExperiences,
       professionalExperiences,
       visibility,
@@ -27,7 +46,7 @@ router.post('/cv/create', authenticateToken, async (req, res) => {
     res.status(201).json(cv);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error creating cv' });
+    res.status(500).json({ message: 'Error creating CV' });
   }
 });
 
@@ -53,7 +72,16 @@ router.put('/cv/update/:id', authenticateToken, async (req, res) => {
   const {
     name,
     firstname,
+    email,
+    phone,
+    address,
+    website,
+    summary,
     description,
+    skills,
+    languages,
+    certifications,
+    interests,
     educationalExperiences,
     professionalExperiences,
     visibility,
@@ -66,14 +94,22 @@ router.put('/cv/update/:id', authenticateToken, async (req, res) => {
     }
 
     // S'assurer que l'utilisateur ne peut mettre à jour que son propre CV
-    if (cv.userId.toString() !== req.user.id) {
+    if (cv.userId !== req.user.id) {
       return res.status(403).json({ message: 'Unauthorized' });
     }
 
-    // Mise à jour du CV
     cv.name = name;
     cv.firstname = firstname;
+    cv.email = email;
+    cv.phone = phone;
+    cv.address = address;
+    cv.website = website;
+    cv.summary = summary;
     cv.description = description;
+    cv.skills = skills;
+    cv.languages = languages;
+    cv.certifications = certifications;
+    cv.interests = interests;
     cv.educationalExperiences = educationalExperiences;
     cv.professionalExperiences = professionalExperiences;
     cv.visibility = visibility;
@@ -83,6 +119,56 @@ router.put('/cv/update/:id', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('Error updating CV:', error);
     res.status(500).json({ message: 'Error updating CV' });
+  }
+});
+
+router.get('/cv/public', authenticateToken, async (req, res) => {
+  try {
+    const searchQuery = req.query.search || '';
+
+    // Construire la requête de recherche
+    let query = { visibility: true };
+
+    if (searchQuery) {
+      const searchRegex = new RegExp(searchQuery, 'i'); // 'i' pour insensibilité à la casse
+
+      query = {
+        ...query,
+        $or: [{ name: searchRegex }, { firstname: searchRegex }],
+      };
+    }
+
+    const publicCvs = await Cv.find(query).select(
+      '_id name firstname description educationalExperiences professionalExperiences visibility userId'
+    );
+
+    res.status(200).json(publicCvs);
+  } catch (error) {
+    console.error('Error fetching public CVs:', error);
+    res
+      .status(500)
+      .json({ message: 'Error fetching public CVs', error: error.message });
+  }
+});
+
+router.get('/cv/:id', authenticateToken, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const cv = await Cv.findById(id);
+
+    if (!cv) {
+      return res.status(404).json({ message: 'CV not found' });
+    }
+
+    if (!cv.visibility && cv.userId !== req.user.id) {
+      return res.status(403).json({ message: 'This CV is private.' });
+    }
+
+    res.status(200).json(cv);
+  } catch (error) {
+    console.error('Error fetching CV:', error);
+    res.status(500).json({ message: 'Error fetching CV' });
   }
 });
 

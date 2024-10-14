@@ -1,8 +1,10 @@
+/* eslint-disable no-undef */
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const router = express.Router();
+const { v4: uuidv4 } = require('uuid');
 
 router.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
@@ -19,9 +21,10 @@ router.post('/register', async (req, res) => {
     }
 
     const user = new User({ name, email, password });
+    const userId = uuidv4();
     await user.save();
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: userId }, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
     res.status(201).json({ token });

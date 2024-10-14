@@ -40,7 +40,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="flex justify-between items-center p-4 bg-white text-black shadow-md fixed top-0 left-0 w-full z-10">
+    <header className="flex justify-between items-center p-4 bg-white bg-opacity-80 text-black shadow-md fixed top-0 left-0 w-full z-10">
       <h1 className="text-xl font-bold">CV Generator Dashboard</h1>
       <nav className="flex space-x-4">
         <Link to="/dashboard" className="text-blue-500 hover:underline">
