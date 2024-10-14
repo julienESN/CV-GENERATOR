@@ -216,7 +216,7 @@ const CreateCvPage = () => {
           Vous avez déjà un CV
         </h1>
         <p className="text-gray-600 mb-6">
-          Vous ne pouvez créer qu'un seul CV, mais vous pouvez le modifier dans
+          Vous ne pouvez créer qu&apos;un seul CV, mais vous pouvez le modifier dans
           votre tableau de bord.
         </p>
         <button

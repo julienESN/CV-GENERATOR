@@ -182,7 +182,7 @@ const CvPage = () => {
         {cv.interests && cv.interests.length > 0 && (
           <div className="mb-8">
             <h2 className="text-2xl font-semibold border-b pb-2 mb-4">
-              Centres d'Intérêt
+              Centres d&apos;Intérêt
             </h2>
             <ul className="list-disc list-inside">
               {cv.interests.map((interest, index) => (
