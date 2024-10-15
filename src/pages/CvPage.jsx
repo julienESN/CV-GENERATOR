@@ -65,7 +65,7 @@ const CvPage = () => {
   }
 
   return (
-    <div className="flex flex-col mt-12 items-center bg-gray-50 p-8 h-screen w-full overflow-y-auto">
+    <div className="flex flex-col mt-12 items-center bg-gray-50 p-8 h-full w-full overflow-y-auto">
       <Header />
       <div className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-8">
         {/* En-tête du CV */}
