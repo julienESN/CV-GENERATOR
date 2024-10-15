@@ -70,11 +70,11 @@ const CvPage = () => {
       <div className="max-w-3xl w-full bg-white shadow-lg rounded-lg p-8">
         {/* En-tête du CV */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-4xl font-bold text-black">
             {cv.firstname} {cv.name}
           </h1>
           {/* Coordonnées */}
-          <div className="mt-4">
+          <div className="mt-4 text-black">
             {cv.email && (
               <p>
                 <strong>Email :</strong> {cv.email}
@@ -91,7 +91,7 @@ const CvPage = () => {
               </p>
             )}
             {cv.website && (
-              <p>
+              <p className="text-black">
                 <strong>Site Web :</strong>{' '}
                 <a href={cv.website} target="_blank" rel="noopener noreferrer">
                   {cv.website}
@@ -99,7 +99,7 @@ const CvPage = () => {
               </p>
             )}
           </div>
-          {cv.summary && <p className="text-gray-600 mt-4">{cv.summary}</p>}
+          {cv.summary && <p className="text-black mt-4">{cv.summary}</p>}
         </div>
 
         {/* Section Compétences */}
@@ -108,7 +108,7 @@ const CvPage = () => {
             <h2 className="text-2xl font-semibold border-b pb-2 mb-4">
               Compétences
             </h2>
-            <ul className="list-disc list-inside">
+            <ul className="list-disc list-inside text-black">
               {cv.skills.map((skill, index) => (
                 <li key={index} className="mb-2">
                   {skill}
@@ -124,7 +124,7 @@ const CvPage = () => {
             <h2 className="text-2xl font-semibold border-b pb-2 mb-4">
               Langues
             </h2>
-            <ul className="list-disc list-inside">
+            <ul className="list-disc list-inside text-black">
               {cv.languages.map((language, index) => (
                 <li key={index} className="mb-2">
                   {language}
@@ -140,7 +140,7 @@ const CvPage = () => {
             <h2 className="text-2xl font-semibold border-b pb-2 mb-4">
               Certifications
             </h2>
-            <ul className="list-disc list-inside">
+            <ul className="list-disc list-inside text-black">
               {cv.certifications.map((certification, index) => (
                 <li key={index} className="mb-2">
                   {certification}
@@ -155,7 +155,7 @@ const CvPage = () => {
           <h2 className="text-2xl font-semibold border-b pb-2 mb-4">
             Expériences Professionnelles
           </h2>
-          <ul className="list-disc list-inside">
+          <ul className="list-disc list-inside text-black">
             {cv.professionalExperiences.map((experience, index) => (
               <li key={index} className="mb-2">
                 {experience}
@@ -169,7 +169,7 @@ const CvPage = () => {
           <h2 className="text-2xl font-semibold border-b pb-2 mb-4">
             Expériences Éducatives
           </h2>
-          <ul className="list-disc list-inside">
+          <ul className="list-disc list-inside text-black">
             {cv.educationalExperiences.map((experience, index) => (
               <li key={index} className="mb-2">
                 {experience}
@@ -184,7 +184,7 @@ const CvPage = () => {
             <h2 className="text-2xl font-semibold border-b pb-2 mb-4">
               Centres d&apos;Intérêt
             </h2>
-            <ul className="list-disc list-inside">
+            <ul className="list-disc list-inside text-black">
               {cv.interests.map((interest, index) => (
                 <li key={index} className="mb-2">
                   {interest}
