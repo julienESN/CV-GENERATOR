@@ -2,6 +2,12 @@
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 
+const RecommendationSchema = new mongoose.Schema({
+  userId: { type: String, ref: 'User', required: true },
+  content: { type: String, required: true },
+  date: { type: Date, default: Date.now },
+});
+
 const CvSchema = new mongoose.Schema({
   _id: { type: String, default: uuidv4 },
   name: { type: String, required: true },
@@ -20,6 +26,7 @@ const CvSchema = new mongoose.Schema({
   professionalExperiences: { type: [String], required: true },
   visibility: { type: Boolean, required: true },
   userId: { type: String, ref: 'User', required: true },
+  recommendations: [RecommendationSchema],
 });
 
 module.exports = mongoose.model('Cv', CvSchema);

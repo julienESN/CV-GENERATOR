@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 const Cv = require('../models/Cv');
+const findBadWords = require('../utils/findBadWords');
 
 exports.createCv = async (req, res) => {
   const {
@@ -161,5 +162,67 @@ exports.getCvById = async (req, res) => {
   } catch (error) {
     console.error('Error fetching CV:', error);
     res.status(500).json({ message: 'Error fetching CV' });
+  }
+};
+
+exports.addRecommendation = async (req, res) => {
+  const cvId = req.params.id;
+  const userId = req.user.id;
+  const { content } = req.body;
+
+  const badWords = findBadWords(content);
+  if (badWords.length > 0) {
+    return res.status(400).json({
+      message: `Votre recommandation contient des mots interdits : ${badWords.join(
+        ', '
+      )}`,
+    });
+  }
+
+  try {
+    const cv = await Cv.findById(cvId);
+
+    if (!cv) {
+      return res.status(404).json({ message: 'CV non trouvé.' });
+    }
+
+    const newRecommendation = {
+      userId,
+      content,
+    };
+
+    cv.recommendations.push(newRecommendation);
+    await cv.save();
+
+    res.status(201).json({ message: 'Recommandation ajoutée avec succès.' });
+  } catch (error) {
+    console.error("Erreur lors de l'ajout de la recommandation :", error);
+    res.status(500).json({
+      message: "Erreur lors de l'ajout de la recommandation.",
+    });
+  }
+};
+
+exports.getRecommendations = async (req, res) => {
+  const cvId = req.params.id;
+
+  try {
+    const cv = await Cv.findById(cvId)
+      .populate('recommendations.userId', 'name')
+      .select('recommendations');
+
+    if (!cv) {
+      return res.status(404).json({ message: 'CV non trouvé.' });
+    }
+
+    res.status(200).json(cv.recommendations);
+  } catch (error) {
+    console.error(
+      'Erreur lors de la récupération des recommandations :',
+      error
+    );
+    res
+      .status(500)
+      .json({ message: 'Erreur lors de la récupération des recommandations.' });
   }
 };
