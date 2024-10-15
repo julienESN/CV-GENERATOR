@@ -3,6 +3,7 @@ import axios from 'axios';
 import InputField from '../components/InputField';
 import SubmitButton from '../components/SubmitButton';
 import { useNavigate } from 'react-router-dom';
+import findBadWords from '../utils/findBadWords';
 
 const CreateCvPage = () => {
   const [name, setName] = useState('');
@@ -45,7 +46,7 @@ const CreateCvPage = () => {
         }
       } catch (error) {
         console.error('Error checking existing CV:', error);
-        setError('Failed to check existing CV.');
+        setError('Échec de la vérification du CV existant.');
       } finally {
         setIsLoading(false);
       }
@@ -53,6 +54,22 @@ const CreateCvPage = () => {
 
     checkExistingCv();
   }, []);
+
+  // Gestionnaire générique pour les entrées avec vérification des mots interdits
+  const handleInputChange = (fieldSetter, fieldLabel) => (e) => {
+    const value = e.target.value;
+    const badWords = findBadWords(value);
+    if (badWords.length > 0) {
+      setError(
+        `Le champ "${fieldLabel}" contient des mots interdits : ${badWords.join(
+          ', '
+        )}`
+      );
+    } else {
+      setError('');
+    }
+    fieldSetter(value);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -66,22 +83,54 @@ const CreateCvPage = () => {
       !educationalExperiences ||
       !professionalExperiences
     ) {
-      setError('Please fill in all fields.');
+      setError('Veuillez remplir tous les champs obligatoires.');
       return;
+    }
+
+    const fieldsToCheck = {
+      Nom: name,
+      Prénom: firstname,
+      Email: email,
+      Téléphone: phone,
+      Adresse: address,
+      SiteWeb: website,
+      Résumé: summary,
+      Description: description,
+      Compétences: skills,
+      Langues: languages,
+      Certifications: certifications,
+      Intérêts: interests,
+      'Expériences Éducatives': educationalExperiences,
+      'Expériences Professionnelles': professionalExperiences,
+    };
+
+    for (const [fieldLabel, fieldValue] of Object.entries(fieldsToCheck)) {
+      const badWords = findBadWords(fieldValue.toString());
+      if (badWords.length > 0) {
+        setError(
+          `Le champ "${fieldLabel}" contient des mots interdits : ${badWords.join(
+            ', '
+          )}`
+        );
+        return;
+      }
     }
 
     const token = localStorage.getItem('token');
     if (!token) {
-      setError('You must be logged in to create a CV.');
+      setError('Vous devez être connecté pour créer un CV.');
       return;
     }
 
     if (hasCv) {
-      setError('You can only create one CV, but you can modify it.');
+      setError(
+        "Vous ne pouvez créer qu'un seul CV, mais vous pouvez le modifier."
+      );
       return;
     }
 
     try {
+      // eslint-disable-next-line no-unused-vars
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/gestionnaire/cv/create`,
         {
@@ -111,7 +160,6 @@ const CreateCvPage = () => {
           },
         }
       );
-      console.log('CV créé :', response.data);
       navigate('/dashboard');
     } catch (error) {
       console.error('Erreur lors de la création du CV :', error);
@@ -124,87 +172,94 @@ const CreateCvPage = () => {
       label: 'Nom',
       type: 'text',
       value: name,
-      onChange: (e) => setName(e.target.value),
+      onChange: handleInputChange(setName, 'Nom'),
     },
     {
       label: 'Prénom',
       type: 'text',
       value: firstname,
-      onChange: (e) => setFirstName(e.target.value),
+      onChange: handleInputChange(setFirstName, 'Prénom'),
     },
     {
       label: 'Email',
       type: 'email',
       value: email,
-      onChange: (e) => setEmail(e.target.value),
+      onChange: handleInputChange(setEmail, 'Email'),
     },
     {
       label: 'Numéro de Téléphone',
       type: 'text',
       value: phone,
-      onChange: (e) => setPhone(e.target.value),
+      onChange: handleInputChange(setPhone, 'Numéro de Téléphone'),
     },
     {
       label: 'Adresse',
       type: 'text',
       value: address,
-      onChange: (e) => setAddress(e.target.value),
+      onChange: handleInputChange(setAddress, 'Adresse'),
     },
     {
       label: 'Site Web ou Portfolio',
       type: 'text',
       value: website,
-      onChange: (e) => setWebsite(e.target.value),
+      onChange: handleInputChange(setWebsite, 'Site Web ou Portfolio'),
     },
     {
       label: 'Résumé Professionnel',
       type: 'textarea',
       value: summary,
-      onChange: (e) => setSummary(e.target.value),
+      onChange: handleInputChange(setSummary, 'Résumé Professionnel'),
     },
     {
       label: 'Description',
       type: 'text',
       value: description,
-      onChange: (e) => setDescription(e.target.value),
+      onChange: handleInputChange(setDescription, 'Description'),
     },
     {
       label: 'Compétences (séparées par des virgules)',
       type: 'text',
       value: skills,
-      onChange: (e) => setSkills(e.target.value),
+      onChange: handleInputChange(setSkills, 'Compétences'),
     },
     {
       label: 'Langues (séparées par des virgules)',
       type: 'text',
       value: languages,
-      onChange: (e) => setLanguages(e.target.value),
+      onChange: handleInputChange(setLanguages, 'Langues'),
     },
     {
       label: 'Certifications (séparées par des virgules)',
       type: 'text',
       value: certifications,
-      onChange: (e) => setCertifications(e.target.value),
+      onChange: handleInputChange(setCertifications, 'Certifications'),
     },
     {
       label: "Centres d'Intérêt (séparés par des virgules)",
       type: 'text',
       value: interests,
-      onChange: (e) => setInterests(e.target.value),
+      onChange: handleInputChange(setInterests, "Centres d'Intérêt"),
     },
     {
       label: 'Expériences Éducatives (séparées par des virgules)',
       type: 'text',
       value: educationalExperiences,
-      onChange: (e) => setEducationalExperiences(e.target.value),
+      onChange: handleInputChange(
+        setEducationalExperiences,
+        'Expériences Éducatives'
+      ),
     },
     {
       label: 'Expériences Professionnelles (séparées par des virgules)',
       type: 'text',
       value: professionalExperiences,
-      onChange: (e) => setProfessionalExperiences(e.target.value),
+      onChange: handleInputChange(
+        setProfessionalExperiences,
+        'Expériences Professionnelles'
+      ),
     },
   ];
+
   if (isLoading) {
     return <p className="text-gray-600">Vérification du CV existant...</p>;
   }
@@ -216,8 +271,8 @@ const CreateCvPage = () => {
           Vous avez déjà un CV
         </h1>
         <p className="text-gray-600 mb-6">
-          Vous ne pouvez créer qu&apos;un seul CV, mais vous pouvez le modifier dans
-          votre tableau de bord.
+          Vous ne pouvez créer qu&apos;un seul CV, mais vous pouvez le modifier
+          dans votre tableau de bord.
         </p>
         <button
           onClick={() => navigate('/dashboard')}
@@ -235,8 +290,8 @@ const CreateCvPage = () => {
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
       <p className="text-gray-600 mb-6">
-        Vous ne pouvez créer qu&apos;un seul CV, mais vous pourrez le modifier après
-        sa création.
+        Vous ne pouvez créer qu&apos;un seul CV, mais vous pourrez le modifier
+        après sa création.
       </p>
 
       <form
