@@ -9,6 +9,14 @@ dotenv.config();
 
 const app = express();
 
+// Swagger
+const swaggerUi = require('swagger-ui-express');
+const yaml = require('yamljs');
+
+const swaggerDocument = yaml.load('./docs/swagger.yaml');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 // Middleware
 app.use(express.json()); // Handle JSON data
 app.use(cors()); // Allow Cross-Origin requests
