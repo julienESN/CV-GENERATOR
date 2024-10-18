@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
+import UserDashboardPage from './pages/UserDashboardPage';
 import CreateCvPage from './pages/CreateCvPage';
 import EditCvPage from './pages/EditCvPage';
 import ProtectedRoute from './Hoc/ProtectedRoute';
@@ -44,6 +45,14 @@ function App() {
             </ProtectedRoute>
           }
         />
+          <Route
+              path="/userdashboard"
+              element={
+                  <ProtectedRoute>
+                      <UserDashboardPage/>
+                  </ProtectedRoute>
+              }
+          />
 
         <Route
           path="/cv/edit/:id"

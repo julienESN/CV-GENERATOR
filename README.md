@@ -32,9 +32,11 @@ The **CV Generator** is a web application that allows users to create, manage, a
 
 2. **CV Creation and Management**
    - Create and edit CVs with fields like name, surname, description, educational experiences, professional experiences, certifications, and interests.
+   - Possibility to delete CVs.
    - Set CV visibility to public or private.
 
 3. **CV Consultation**
+    - View of user CVs.
    - View public CVs of other users.
    - Search for CVs by name or surname.
    - Authenticated users can view detailed CVs.

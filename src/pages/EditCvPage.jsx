@@ -157,7 +157,7 @@ const EditCvPage = () => {
       );
       setSuccess('CV mis à jour avec succès !');
       console.log('CV mis à jour :', response.data);
-      navigate('/dashboard');
+      navigate('/userdashboard');
     } catch (error) {
       console.error('Erreur lors de la mise à jour du CV :', error);
       setError('Échec de la mise à jour du CV. Veuillez réessayer.');
@@ -261,8 +261,8 @@ const EditCvPage = () => {
     <div className="flex flex-col items-center bg-gray-50 p-8 h-screen w-full overflow-y-auto">
       <div className="flex items-center mb-6">
         {/* Ajout de la flèche */}
-        <Link to="/dashboard" className="mr-4 text-blue-500">
-          ← Retour au dashboard
+        <Link to="/userdashboard" className="mr-4 text-blue-500">
+          ← Retour
         </Link>
         <h1 className="text-2xl font-bold text-gray-700">Modifier votre CV</h1>
       </div>

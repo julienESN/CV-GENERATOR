@@ -119,6 +119,30 @@ exports.updateCv = async (req, res) => {
   }
 };
 
+exports.deleteCv = async (req, res) => {
+  const cvId = req.params.id;
+
+  try {
+    const cv = await Cv.findById(cvId);
+    if (!cv) {
+      return res.status(404).json({message: 'CV not found'});
+    }
+
+    // Check if the user is authorized to delete the CV
+    if (cv.userId !== req.user.id) {
+      return res.status(403).json({message: 'Unauthorized'});
+    }
+
+    // Call findByIdAndDelete on the Cv model itself, not on the instance
+    await Cv.findByIdAndDelete(cvId);
+    res.status(200).json({message: 'CV deleted successfully'});
+  } catch (error) {
+    console.error('Error deleting CV:', error);
+    res.status(500).json({message: 'Error deleting CV'});
+  }
+};
+
+
 exports.getPublicCvs = async (req, res) => {
   try {
     const searchQuery = req.query.search || '';

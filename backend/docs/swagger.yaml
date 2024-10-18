@@ -358,6 +358,56 @@ paths:
                   message:
                     type: string
 
+  /cv/delete/{id}:
+    delete:
+      summary: Delete a CV
+      tags:
+        - CV
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          description: ID of the CV to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: CV deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CV'
+        '403':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: CV not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Error deleting CV
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+
   /cv/public:
     get:
       summary: Get public CVs
@@ -438,3 +488,4 @@ paths:
                 properties:
                   message:
                     type: string
+
