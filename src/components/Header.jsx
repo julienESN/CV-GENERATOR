@@ -47,20 +47,9 @@ const Header = () => {
           Dashboard
         </Link>
 
-        {location.pathname === '/dashboard' && !hasCv && (
-          <Link to="/create-cv" className="text-blue-500 hover:underline">
-            Create Your CV!
-          </Link>
-        )}
-
-        {hasCv && cvId && (
-          <Link
-            to={`/cv/edit/${cvId}`}
-            className="text-blue-500 hover:underline"
-          >
-            Edit Your CV
-          </Link>
-        )}
+        <Link to="/userdashboard" className="text-blue-500 hover:underline">
+          My CV
+        </Link>
 
         <button
           onClick={handleLogout}
