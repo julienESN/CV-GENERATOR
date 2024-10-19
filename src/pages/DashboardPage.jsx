@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPen, faTrash} from "@fortawesome/free-solid-svg-icons";
 
 const DashboardPage = () => {
   const [publicCvs, setPublicCvs] = useState([]);
@@ -47,7 +49,7 @@ const DashboardPage = () => {
       <Header />
       <div className="p-6 mt-20">
         <h1 className="text-2xl font-bold">
-          Bienvenue sur votre Tableau de Bord !
+          Bienvenue le Tableau de Bord Communautaire !
         </h1>
         <p>Cette page est protégée. Vous êtes connecté.</p>
 
@@ -70,26 +72,27 @@ const DashboardPage = () => {
           ) : (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-4">
               {publicCvs.map((cv) => (
-                <Link
-                  to={`/cv/${cv._id}`}
-                  key={cv._id}
-                  className="border p-4 rounded shadow-lg hover:bg-gray-100"
-                >
-                  <h3 className="text-lg font-bold">
-                    {cv.name} {cv.firstname}
-                  </h3>
-                  <p>
-                    <strong>Description :</strong> {cv.description}
-                  </p>
-                  <p>
-                    <strong>Expériences Éducatives :</strong>{' '}
-                    {cv.educationalExperiences.join(', ')}
-                  </p>
-                  <p>
-                    <strong>Expériences Professionnelles :</strong>{' '}
-                    {cv.professionalExperiences.join(', ')}
-                  </p>
-                </Link>
+                  <div key={cv._id}
+                       className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-200 p-4">
+                    <Link
+                        to={`/cv/${cv._id}`}
+                    >
+                      <h3 className="text-xl font-semibold text-gray-800">
+                        {cv.name} {cv.firstname}
+                      </h3>
+                      <p className="text-gray-600 mt-1">
+                        <strong>Description :</strong> {cv.description
+                      }</p>
+                      <p className="text-gray-600">
+                        <strong>Expériences Éducatives :</strong>
+                        {cv.educationalExperiences.join(', ')}
+                      </p>
+                      <p className="text-gray-600">
+                        <strong>Expériences Professionnelles :</strong>
+                        {cv.professionalExperiences.join(', ')}
+                      </p>
+                    </Link>
+                  </div>
               ))}
             </div>
           )}
